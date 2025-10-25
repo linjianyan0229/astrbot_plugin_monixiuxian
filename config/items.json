@@ -6,96 +6,345 @@
         "description": "普通的丹药，能恢复少量气血。",
         "price": 50,
         "effect": {
-            "type": "add_hp",
-            "value": 100
+            "add_hp": 100
         }
     },
     "1002": {
-        "name": "引气丹",
+        "name": "一品培元丹",
         "type": "丹药",
         "rank": "凡品",
-        "description": "能少量增加修为，对炼气期修士效果显著。",
-        "price": 200,
+        "description": "炼气期修士常用的修炼丹药，能增加少量修为。",
+        "price": 100,
         "effect": {
-            "type": "add_experience",
-            "value": 100
+            "add_experience": 80
         }
     },
     "1003": {
-        "name": "三品回元丹",
+        "name": "一品凝气丹",
         "type": "丹药",
-        "rank": "珍品",
-        "description": "快速恢复大量气血，是战斗中的保障。",
-        "price": 500,
+        "rank": "凡品",
+        "description": "辅助炼气修士稳固修为，打牢根基。",
+        "price": 150,
         "effect": {
-            "type": "add_hp",
-            "value": 500
+            "add_experience": 120
         }
     },
     "1004": {
-        "name": "筑基丹",
+        "name": "二品回春丹",
         "type": "丹药",
-        "rank": "珍品",
-        "description": "辅助突破至筑基期的关键丹药，能少量提升突破成功率（暂无实际效果）。",
-        "price": 2000
+        "rank": "凡品",
+        "description": "炼气后期修士使用的疗伤丹药，效果显著。",
+        "price": 200,
+        "effect": {
+            "add_hp": 250
+        }
     },
     "1005": {
-        "name": "聚灵丹",
+        "name": "二品引气丹",
         "type": "丹药",
-        "rank": "珍品",
-        "description": "蕴含精纯灵气，能大幅增加修为。",
-        "price": 1000,
+        "rank": "凡品",
+        "description": "引导天地灵气入体，快速提升修为。",
+        "price": 300,
         "effect": {
-            "type": "add_experience",
-            "value": 500
+            "add_experience": 200
         }
     },
     "1006": {
-        "name": "大力丸",
+        "name": "二品壮元丹",
         "type": "丹药",
         "rank": "凡品",
-        "description": "凡人所制的丹丸，据说能临时增长力气（暂无实际效果）。",
-        "price": 80
+        "description": "强化经脉，增进修为，是筑基前的重要丹药。",
+        "price": 400,
+        "effect": {
+            "add_experience": 300
+        }
     },
     "1007": {
-        "name": "五品凝神丹",
+        "name": "三品回元丹",
         "type": "丹药",
-        "rank": "圣品",
-        "description": "蕴含天地法则，能让修士获得海量修为。",
-        "price": 8000,
+        "rank": "珍品",
+        "description": "快速恢复大量气血，并略微提升气血上限。",
+        "price": 600,
         "effect": {
-            "type": "add_experience",
-            "value": 5000
+            "add_hp": 500,
+            "add_max_hp": 10
         }
     },
     "1008": {
-        "name": "九转还魂丹",
+        "name": "三品聚灵丹",
         "type": "丹药",
-        "rank": "圣品",
-        "description": "生死人肉白骨的无上神药，能瞬间恢复所有生命。",
-        "price": 15000,
+        "rank": "珍品",
+        "description": "蕴含精纯灵气，筑基期修士的首选修炼丹药，兼能提升灵力。",
+        "price": 800,
         "effect": {
-            "type": "add_hp",
-            "value": 99999
+            "add_experience": 600,
+            "add_spiritual_power": 20
         }
     },
     "1009": {
-        "name": "破障丹",
+        "name": "三品筑基丹",
         "type": "丹药",
-        "rank": "圣品",
-        "description": "突破瓶颈时使用，能极大增加突破成功率（暂无实际效果）。",
-        "price": 25000
+        "rank": "珍品",
+        "description": "辅助突破至筑基期的关键丹药，能提升突破成功率并增强体质。",
+        "price": 2500,
+        "effect": {
+            "add_max_hp": 30,
+            "add_spiritual_power": 30,
+            "add_mental_power": 30,
+            "add_breakthrough_bonus": 0.1
+        }
     },
     "1010": {
-        "name": "金髓丹",
+        "name": "四品玉髓丹",
+        "type": "丹药",
+        "rank": "珍品",
+        "description": "恢复气血的四品灵丹，药效温和绵长，能提升气血上限。",
+        "price": 1500,
+        "effect": {
+            "add_hp": 1000,
+            "add_max_hp": 25,
+            "add_defense": 5
+        }
+    },
+    "1011": {
+        "name": "四品化灵丹",
+        "type": "丹药",
+        "rank": "珍品",
+        "description": "化灵气为修为，金丹期修士的重要修炼资源，能提升灵力。",
+        "price": 2000,
+        "effect": {
+            "add_experience": 1500,
+            "add_spiritual_power": 50,
+            "add_mental_power": 30
+        }
+    },
+    "1012": {
+        "name": "四品破境丹",
+        "type": "丹药",
+        "rank": "珍品",
+        "description": "突破金丹期瓶颈的辅助丹药，提升突破成功率并强化体质。",
+        "price": 6500,
+        "effect": {
+            "add_max_hp": 60,
+            "add_spiritual_power": 60,
+            "add_mental_power": 60,
+            "add_attack": 10,
+            "add_defense": 8,
+            "add_breakthrough_bonus": 0.15
+        }
+    },
+    "1013": {
+        "name": "五品紫金丹",
+        "type": "丹药",
+        "rank": "圣品",
+        "description": "疗伤圣药，可快速恢复重伤并大幅强化体魄。",
+        "price": 5000,
+        "effect": {
+            "add_hp": 2500,
+            "add_max_hp": 100,
+            "add_defense": 25,
+            "add_spiritual_power": 80
+        }
+    },
+    "1014": {
+        "name": "五品凝神丹",
+        "type": "丹药",
+        "rank": "圣品",
+        "description": "蕴含天地法则，能让修士获得海量修为并大幅提升精神力。",
+        "price": 8000,
+        "effect": {
+            "add_experience": 5000,
+            "add_spiritual_power": 150,
+            "add_mental_power": 200,
+            "add_attack": 30
+        }
+    },
+    "1015": {
+        "name": "五品渡劫丹",
+        "type": "丹药",
+        "rank": "圣品",
+        "description": "元婴期修士渡劫时服用，能增加渡劫成功率并全面提升体质。",
+        "price": 26000,
+        "effect": {
+            "add_max_hp": 200,
+            "add_spiritual_power": 200,
+            "add_mental_power": 200,
+            "add_attack": 40,
+            "add_defense": 40,
+            "add_breakthrough_bonus": 0.2
+        }
+    },
+    "1016": {
+        "name": "六品造化丹",
+        "type": "丹药",
+        "rank": "圣品",
+        "description": "夺天地造化，可令濒死之人起死回生，并大幅增强生命力。",
+        "price": 18000,
+        "effect": {
+            "add_hp": 6000,
+            "add_max_hp": 300,
+            "add_defense": 60,
+            "add_spiritual_power": 180,
+            "add_mental_power": 120
+        }
+    },
+    "1017": {
+        "name": "六品天元丹",
+        "type": "丹药",
+        "rank": "圣品",
+        "description": "汇聚天地元气，化神期修士梦寐以求的修炼至宝，能大幅提升灵力。",
+        "price": 25000,
+        "effect": {
+            "add_experience": 15000,
+            "add_spiritual_power": 400,
+            "add_mental_power": 300,
+            "add_attack": 80,
+            "add_max_hp": 250
+        }
+    },
+    "1018": {
+        "name": "六品破婴丹",
+        "type": "丹药",
+        "rank": "圣品",
+        "description": "突破化神期的关键丹药，蕴含天地玄机，全面强化修士体质。",
+        "price": 80000,
+        "effect": {
+            "add_max_hp": 500,
+            "add_spiritual_power": 500,
+            "add_mental_power": 500,
+            "add_attack": 100,
+            "add_defense": 100,
+            "add_breakthrough_bonus": 0.25
+        }
+    },
+    "1019": {
+        "name": "七品太乙丹",
         "type": "丹药",
         "rank": "帝品",
-        "description": "以上古神兽骨髓炼制，据说能洗筋伐髓，重塑根骨。",
-        "price": 100000,
+        "description": "太乙真人炼制之法，可肉白骨、活死人，专注极致提升气血上限。",
+        "price": 50000,
         "effect": {
-            "type": "add_experience",
-            "value": 50000
+            "add_hp": 15000,
+            "add_max_hp": 2000
         }
+    },
+    "1020": {
+        "name": "七品金髓丹",
+        "type": "丹药",
+        "rank": "帝品",
+        "description": "以上古神兽骨髓炼制，能洗筋伐髓，专注极致提升攻击力。",
+        "price": 80000,
+        "effect": {
+            "add_experience": 40000,
+            "add_attack": 800
+        }
+    },
+    "1021": {
+        "name": "七品化神丹",
+        "type": "丹药",
+        "rank": "帝品",
+        "description": "助修士化神成圣，突破炼虚期的无上宝药，专注极致提升灵力。",
+        "price": 800000,
+        "effect": {
+            "add_spiritual_power": 3000,
+            "add_breakthrough_bonus": 0.3
+        }
+    },
+    "1022": {
+        "name": "八品九转丹",
+        "type": "丹药",
+        "rank": "帝品",
+        "description": "传说中的八品灵丹，九转炼制，专注极致提升防御力。",
+        "price": 150000,
+        "effect": {
+            "add_hp": 35000,
+            "add_defense": 1500
+        }
+    },
+    "1023": {
+        "name": "八品道元丹",
+        "type": "丹药",
+        "rank": "帝品",
+        "description": "悟道之丹，合体期修士的无上至宝，专注极致提升精神力。",
+        "price": 250000,
+        "effect": {
+            "add_experience": 100000,
+            "add_mental_power": 5000
+        }
+    },
+    "1024": {
+        "name": "八品破虚丹",
+        "type": "丹药",
+        "rank": "帝品",
+        "description": "破碎虚空，助修士突破合体期桎梏，专注极致全面提升。",
+        "price": 850000,
+        "effect": {
+            "add_max_hp": 3000,
+            "add_spiritual_power": 6000,
+            "add_mental_power": 6000,
+            "add_attack": 1000,
+            "add_defense": 1000,
+            "add_breakthrough_bonus": 0.35
+        }
+    },
+    "1025": {
+        "name": "九品还魂丹",
+        "type": "丹药",
+        "rank": "神品",
+        "description": "九转还魂，生死人肉白骨的无上神药，可起死回生。",
+        "price": 500000,
+        "effect": {
+            "add_hp": 99999,
+            "add_max_hp": 5000
+        }
+    },
+    "1026": {
+        "name": "九品成圣丹",
+        "type": "丹药",
+        "rank": "神品",
+        "description": "天地至宝，服之可证道成圣，领悟天地法则。",
+        "price": 888888,
+        "effect": {
+            "add_experience": 300000,
+            "add_spiritual_power": 10000,
+            "add_mental_power": 10000
+        }
+    },
+    "1027": {
+        "name": "九品破劫丹",
+        "type": "丹药",
+        "rank": "神品",
+        "description": "渡劫成仙的无上圣药，可增加飞升成功率，逆天改命，全方位蜕变。",
+        "price": 2800000,
+        "effect": {
+            "add_max_hp": 8000,
+            "add_spiritual_power": 15000,
+            "add_mental_power": 15000,
+            "add_attack": 2000,
+            "add_defense": 2000,
+            "add_breakthrough_bonus": 0.5
+        }
+    },
+    "1028": {
+        "name": "大力丸",
+        "type": "丹药",
+        "rank": "凡品",
+        "description": "凡人所制的丹丸，据说能临时增长力气。",
+        "price": 30
+    },
+    "1029": {
+        "name": "辟谷丹",
+        "type": "丹药",
+        "rank": "凡品",
+        "description": "服用后可七日不饥，是修士闭关常备之物。",
+        "price": 50
+    },
+    "1030": {
+        "name": "解毒丹",
+        "type": "丹药",
+        "rank": "珍品",
+        "description": "解百毒，是探索险地的必备丹药。",
+        "price": 500
     },
     "2001": {
         "name": "精铁",

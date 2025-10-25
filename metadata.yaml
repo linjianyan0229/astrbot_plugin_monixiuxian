@@ -1,5 +1,5 @@
 name: 模拟修仙 # 这是你的插件的唯一识别名。
 desc: 一款为 AstrBot 设计的、功能丰富的放置类修仙游戏插件。让你在聊天群中体验从凡人到大能的修行之路，工作摸鱼、畅聊吹水的同时亦可得道飞升！ # 插件简短描述
-version: v2.3.0 # 插件版本号。格式：v1.1.1 或者 v1.1
+version: v2.4.0 # 插件版本号。格式：v1.1.1 或者 v1.1
 author: linjianyan0229 # 作者
 repo: https://github.com/linjianyan0229/astrbot_plugin_monixiuxian # 插件的仓库地址

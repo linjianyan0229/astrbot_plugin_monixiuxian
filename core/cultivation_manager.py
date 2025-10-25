@@ -95,10 +95,34 @@ class CultivationManager:
         }
 
     def _calculate_base_stats(self, level_index: int) -> Dict[str, int]:
-        base_hp = 100 + level_index * 50
-        base_attack = 10 + level_index * 8
-        base_defense = 5 + level_index * 4
-        return {"hp": base_hp, "max_hp": base_hp, "attack": base_attack, "defense": base_defense}
+        """从境界配置中读取基础属性"""
+        if 0 <= level_index < len(self.config_manager.level_data):
+            level_config = self.config_manager.level_data[level_index]
+            base_hp = level_config.get("base_hp", 100 + level_index * 50)
+            base_attack = level_config.get("base_attack", 10 + level_index * 8)
+            base_defense = level_config.get("base_defense", 5 + level_index * 4)
+            base_spiritual_power = level_config.get("base_spiritual_power", 50 + level_index * 20)
+            base_mental_power = level_config.get("base_mental_power", 50 + level_index * 20)
+            
+            return {
+                "hp": base_hp,
+                "max_hp": base_hp,
+                "attack": base_attack,
+                "defense": base_defense,
+                "spiritual_power": base_spiritual_power,
+                "mental_power": base_mental_power
+            }
+        else:
+            # 回退逻辑，使用默认计算
+            base_hp = 100 + level_index * 50
+            return {
+                "hp": base_hp,
+                "max_hp": base_hp,
+                "attack": 10 + level_index * 8,
+                "defense": 5 + level_index * 4,
+                "spiritual_power": 50 + level_index * 20,
+                "mental_power": 50 + level_index * 20
+            }
 
     def _get_random_spiritual_root(self) -> str:
         """基于权重随机抽取灵根"""
@@ -320,7 +344,11 @@ class CultivationManager:
                    f"所需修为：{exp_needed} (当前拥有 {p_clone.experience})")
             return False, msg, p_clone
 
-        if random.random() < success_rate:
+        # 应用突破加成buff
+        final_success_rate = min(1.0, success_rate + p_clone.breakthrough_bonus)
+        has_bonus = p_clone.breakthrough_bonus > 0
+        
+        if random.random() < final_success_rate:
             p_clone.level_index = current_level_index + 1
             p_clone.experience -= exp_needed
 
@@ -329,15 +357,37 @@ class CultivationManager:
             p_clone.max_hp = new_stats['max_hp']
             p_clone.attack = new_stats['attack']
             p_clone.defense = new_stats['defense']
+            p_clone.spiritual_power = new_stats['spiritual_power']
+            p_clone.mental_power = new_stats['mental_power']
+            
+            # 清除突破加成buff
+            bonus_used = p_clone.breakthrough_bonus
+            p_clone.breakthrough_bonus = 0.0
 
-            msg = (f"恭喜道友！天降祥瑞，突破成功！\n"
+            bonus_msg = ""
+            if has_bonus:
+                bonus_percent = int(bonus_used * 100)
+                bonus_msg = f"\n💫 突破丹药生效！成功率+{bonus_percent}% (基础{int(success_rate*100)}% → 最终{int(final_success_rate*100)}%)"
+
+            msg = (f"恭喜道友！天降祥瑞，突破成功！{bonus_msg}\n"
                    f"当前境界已达：【{p_clone.get_level(self.config_manager)}】\n"
-                   f"生命值提升至 {p_clone.max_hp}，攻击提升至 {p_clone.attack}，防御提升至 {p_clone.defense}！\n"
+                   f"🩸 气血：{p_clone.max_hp} | ⚔️ 攻击：{p_clone.attack} | 🛡️ 防御：{p_clone.defense}\n"
+                   f"✨ 灵力：{p_clone.spiritual_power} | 🧠 精神力：{p_clone.mental_power}\n"
                    f"剩余修为: {p_clone.experience}")
         else:
             punishment = int(exp_needed * self.config["VALUES"]["BREAKTHROUGH_FAIL_PUNISHMENT_RATIO"])
             p_clone.experience -= punishment
-            msg = (f"可惜！道友在突破过程中气息不稳，导致失败。\n"
+            
+            # 清除突破加成buff（失败也会消耗）
+            bonus_used = p_clone.breakthrough_bonus
+            p_clone.breakthrough_bonus = 0.0
+            
+            bonus_msg = ""
+            if has_bonus:
+                bonus_percent = int(bonus_used * 100)
+                bonus_msg = f"\n💫 虽使用了突破丹药(成功率+{bonus_percent}%)，但天意弄人..."
+                
+            msg = (f"可惜！道友在突破过程中气息不稳，导致失败。{bonus_msg}\n"
                    f"境界稳固在【{p_clone.get_level(self.config_manager)}】，但修为空耗 {punishment} 点。\n"
                    f"剩余修为: {p_clone.experience}")
 

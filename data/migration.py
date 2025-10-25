@@ -5,7 +5,7 @@ from typing import Dict, Callable, Awaitable
 from astrbot.api import logger
 from ..config_manager import ConfigManager
 
-LATEST_DB_VERSION = 13 # 版本号提升
+LATEST_DB_VERSION = 15 # 版本号提升 - 添加突破成功率加成
 
 MIGRATION_TASKS: Dict[int, Callable[[aiosqlite.Connection, ConfigManager], Awaitable[None]]] = {}
 
@@ -31,7 +31,7 @@ class MigrationManager:
                 logger.info("未检测到数据库版本，将进行全新安装...")
                 await self.conn.execute("BEGIN")
                 # 使用最新的建表函数
-                await _create_all_tables_v13(self.conn)
+                await _create_all_tables_v15(self.conn)
                 await self.conn.execute("INSERT INTO db_info (version) VALUES (?)", (LATEST_DB_VERSION,))
                 await self.conn.commit()
                 logger.info(f"数据库已初始化到最新版本: v{LATEST_DB_VERSION}")
@@ -336,6 +336,113 @@ async def _create_all_tables_v13(conn: aiosqlite.Connection):
             FOREIGN KEY (sect_id) REFERENCES sects (id) ON DELETE SET NULL
         )
     """)
+
+async def _create_all_tables_v14(conn: aiosqlite.Connection):
+    await conn.execute("CREATE TABLE IF NOT EXISTS db_info (version INTEGER NOT NULL)")
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS sects (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE,
+            leader_id TEXT NOT NULL, level INTEGER NOT NULL DEFAULT 1,
+            funds INTEGER NOT NULL DEFAULT 0
+        )
+    """)
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS players (
+            user_id TEXT PRIMARY KEY, level_index INTEGER NOT NULL, spiritual_root TEXT NOT NULL,
+            experience INTEGER NOT NULL, gold INTEGER NOT NULL, last_check_in REAL NOT NULL,
+            state TEXT NOT NULL, state_start_time REAL NOT NULL, sect_id INTEGER, sect_name TEXT,
+            hp INTEGER NOT NULL, max_hp INTEGER NOT NULL, attack INTEGER NOT NULL, defense INTEGER NOT NULL,
+            spiritual_power INTEGER NOT NULL DEFAULT 50, mental_power INTEGER NOT NULL DEFAULT 50,
+            realm_id TEXT, realm_floor INTEGER NOT NULL DEFAULT 0, realm_data TEXT,
+            equipped_weapon TEXT, equipped_armor TEXT, equipped_accessory TEXT,
+            dao_name TEXT,
+            FOREIGN KEY (sect_id) REFERENCES sects (id) ON DELETE SET NULL
+        )
+    """)
+
+async def _create_all_tables_v15(conn: aiosqlite.Connection):
+    await conn.execute("CREATE TABLE IF NOT EXISTS db_info (version INTEGER NOT NULL)")
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS sects (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE,
+            leader_id TEXT NOT NULL, level INTEGER NOT NULL DEFAULT 1,
+            funds INTEGER NOT NULL DEFAULT 0
+        )
+    """)
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS players (
+            user_id TEXT PRIMARY KEY, level_index INTEGER NOT NULL, spiritual_root TEXT NOT NULL,
+            experience INTEGER NOT NULL, gold INTEGER NOT NULL, last_check_in REAL NOT NULL,
+            state TEXT NOT NULL, state_start_time REAL NOT NULL, sect_id INTEGER, sect_name TEXT,
+            hp INTEGER NOT NULL, max_hp INTEGER NOT NULL, attack INTEGER NOT NULL, defense INTEGER NOT NULL,
+            spiritual_power INTEGER NOT NULL DEFAULT 50, mental_power INTEGER NOT NULL DEFAULT 50,
+            breakthrough_bonus REAL NOT NULL DEFAULT 0.0,
+            realm_id TEXT, realm_floor INTEGER NOT NULL DEFAULT 0, realm_data TEXT,
+            equipped_weapon TEXT, equipped_armor TEXT, equipped_accessory TEXT,
+            dao_name TEXT,
+            FOREIGN KEY (sect_id) REFERENCES sects (id) ON DELETE SET NULL
+        )
+    """)
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS inventory (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, item_id TEXT NOT NULL,
+            quantity INTEGER NOT NULL, FOREIGN KEY (user_id) REFERENCES players (user_id) ON DELETE CASCADE,
+            UNIQUE(user_id, item_id)
+        )
+    """)
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS active_world_bosses (
+            boss_id TEXT PRIMARY KEY,
+            current_hp INTEGER NOT NULL,
+            max_hp INTEGER NOT NULL,
+            spawned_at REAL NOT NULL,
+            level_index INTEGER NOT NULL
+        )
+    """)
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS world_boss_participants (
+            boss_id TEXT NOT NULL,
+            user_id TEXT NOT NULL,
+            user_name TEXT NOT NULL,
+            total_damage INTEGER NOT NULL DEFAULT 0,
+            PRIMARY KEY (boss_id, user_id),
+            FOREIGN KEY (user_id) REFERENCES players (user_id) ON DELETE CASCADE
+        )
+    """)
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS shop_inventory (
+            date TEXT NOT NULL,
+            item_id TEXT NOT NULL,
+            stock INTEGER NOT NULL,
+            PRIMARY KEY (date, item_id)
+        )
+    """)
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS boss_cooldowns (
+            boss_id TEXT PRIMARY KEY,
+            defeated_at REAL NOT NULL,
+            respawn_at REAL NOT NULL
+        )
+    """)
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS fixed_deposits (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT NOT NULL,
+            amount INTEGER NOT NULL,
+            deposit_time REAL NOT NULL,
+            mature_time REAL NOT NULL,
+            duration_hours INTEGER NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES players (user_id) ON DELETE CASCADE
+        )
+    """)
+    await conn.execute("""
+        CREATE TABLE IF NOT EXISTS current_deposits (
+            user_id TEXT PRIMARY KEY,
+            amount INTEGER NOT NULL,
+            deposit_time REAL NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES players (user_id) ON DELETE CASCADE
+        )
+    """)
     await conn.execute("""
         CREATE TABLE IF NOT EXISTS inventory (
             id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, item_id TEXT NOT NULL,
@@ -623,3 +730,25 @@ async def _upgrade_v12_to_v13(conn: aiosqlite.Connection, config_manager: Config
         if 'dao_name' not in columns:
             await conn.execute("ALTER TABLE players ADD COLUMN dao_name TEXT")
     logger.info("v12 -> v13 数据库迁移完成！")
+
+@migration(14)
+async def _upgrade_v13_to_v14(conn: aiosqlite.Connection, config_manager: ConfigManager):
+    """为players表添加灵力和精神力字段"""
+    logger.info("开始执行 v13 -> v14 数据库迁移...")
+    async with conn.execute("PRAGMA table_info(players)") as cursor:
+        columns = [row['name'] for row in await cursor.fetchall()]
+        if 'spiritual_power' not in columns:
+            await conn.execute("ALTER TABLE players ADD COLUMN spiritual_power INTEGER NOT NULL DEFAULT 50")
+        if 'mental_power' not in columns:
+            await conn.execute("ALTER TABLE players ADD COLUMN mental_power INTEGER NOT NULL DEFAULT 50")
+    logger.info("v13 -> v14 数据库迁移完成！")
+
+@migration(15)
+async def _upgrade_v14_to_v15(conn: aiosqlite.Connection, config_manager: ConfigManager):
+    """为players表添加突破成功率加成字段"""
+    logger.info("开始执行 v14 -> v15 数据库迁移...")
+    async with conn.execute("PRAGMA table_info(players)") as cursor:
+        columns = [row['name'] for row in await cursor.fetchall()]
+        if 'breakthrough_bonus' not in columns:
+            await conn.execute("ALTER TABLE players ADD COLUMN breakthrough_bonus REAL NOT NULL DEFAULT 0.0")
+    logger.info("v14 -> v15 数据库迁移完成！")

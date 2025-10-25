@@ -14,30 +14,71 @@ CMD_USE_ITEM = "使用"
 
 __all__ = ["ShopHandler"]
 
-def calculate_item_effect(item_info: Optional[Item], quantity: int) -> Tuple[Optional[PlayerEffect], str]:
+def calculate_item_effect(item_info: Optional[Item], quantity: int) -> Tuple[Optional[PlayerEffect], str, float]:
     if not item_info or not (effect_config := item_info.effect):
-        return None, f"【{item_info.name if item_info else '未知物品'}】似乎只是凡物，无法使用。"
+        return None, f"【{item_info.name if item_info else '未知物品'}】似乎只是凡物，无法使用。", 0.0
 
     effect = PlayerEffect()
     messages = []
 
-    effect_type = effect_config.get("type")
-    value = effect_config.get("value", 0) * quantity
-
-    if effect_type == "add_experience":
+    # 新版effect格式：直接使用属性名作为key
+    if "add_experience" in effect_config:
+        value = effect_config["add_experience"] * quantity
         effect.experience = value
-        messages.append(f"修为增加了 {value} 点")
-    elif effect_type == "add_gold":
+        messages.append(f"修为+{value}")
+    
+    if "add_gold" in effect_config:
+        value = effect_config["add_gold"] * quantity
         effect.gold = value
-        messages.append(f"灵石增加了 {value} 点")
-    elif effect_type == "add_hp":
+        messages.append(f"灵石+{value}")
+    
+    if "add_hp" in effect_config:
+        value = effect_config["add_hp"] * quantity
         effect.hp = value
-        messages.append(f"恢复了 {value} 点生命")
-    else:
-         return None, f"你研究了半天，也没能参透【{item_info.name}】的用法。"
+        messages.append(f"气血+{value}")
+    
+    if "add_max_hp" in effect_config:
+        value = effect_config["add_max_hp"] * quantity
+        effect.max_hp = value
+        messages.append(f"气血上限+{value}")
+    
+    if "add_spiritual_power" in effect_config:
+        value = effect_config["add_spiritual_power"] * quantity
+        effect.spiritual_power = value
+        messages.append(f"灵力+{value}")
+    
+    if "add_mental_power" in effect_config:
+        value = effect_config["add_mental_power"] * quantity
+        effect.mental_power = value
+        messages.append(f"精神力+{value}")
+    
+    if "add_attack" in effect_config:
+        value = effect_config["add_attack"] * quantity
+        effect.attack = value
+        messages.append(f"攻击+{value}")
+    
+    if "add_defense" in effect_config:
+        value = effect_config["add_defense"] * quantity
+        effect.defense = value
+        messages.append(f"防御+{value}")
+    
+    # 突破成功率加成（buff效果，不叠加数量）
+    breakthrough_bonus = 0.0
+    if "add_breakthrough_bonus" in effect_config:
+        breakthrough_bonus = effect_config["add_breakthrough_bonus"]
+        bonus_percent = int(breakthrough_bonus * 100)
+        messages.append(f"💫突破成功率+{bonus_percent}%")
 
-    full_message = f"你使用了 {quantity} 个【{item_info.name}】，" + "，".join(messages) + "！"
-    return effect, full_message
+    if not messages:
+        return None, f"你研究了半天，也没能参透【{item_info.name}】的用法。", 0.0
+
+    full_message = f"✨ 你使用了 {quantity} 个【{item_info.name}】\n" + "、".join(messages) + "！"
+    
+    # 如果有突破加成，添加提示
+    if breakthrough_bonus > 0:
+        full_message += f"\n💡 提示：突破加成buff已激活，下次突破时生效！"
+    
+    return effect, full_message, breakthrough_bonus
 
 class ShopHandler:
     # 坊市相关指令处理器
@@ -223,12 +264,12 @@ class ShopHandler:
 
         else:
             # 消耗品
-            effect, msg = calculate_item_effect(target_item_info, quantity)
+            effect, msg, breakthrough_bonus = calculate_item_effect(target_item_info, quantity)
             if not effect:
                 yield event.plain_result(msg)
                 return
 
-            success = await self.db.transactional_apply_item_effect(player.user_id, target_item_id, quantity, effect)
+            success = await self.db.transactional_apply_item_effect(player.user_id, target_item_id, quantity, effect, breakthrough_bonus)
 
             if success:
                 yield event.plain_result(msg)

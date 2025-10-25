@@ -68,6 +68,12 @@ class PlayerHandler:
 
         equipped_info = "\n".join(equipped_items_lines)
 
+        # 突破buff显示
+        breakthrough_buff_msg = ""
+        if player.breakthrough_bonus > 0:
+            bonus_percent = int(player.breakthrough_bonus * 100)
+            breakthrough_buff_msg = f"💫 突破加成: +{bonus_percent}%\n"
+        
         reply_msg = (
             f"--- 道友 {display_name} 的信息 ---\n"
             f"境界：{player.get_level(self.config_manager)}\n"
@@ -76,10 +82,13 @@ class PlayerHandler:
             f"灵石：{player.gold}\n"
             f"{sect_info}\n"
             f"状态：{player.state}\n"
+            f"{breakthrough_buff_msg}"
             "--- 战斗属性 (含装备加成) ---\n"
-            f"❤️生命: {combat_stats['hp']}/{combat_stats['max_hp']}\n"
-            f"⚔️攻击: {combat_stats['attack']}\n"
-            f"🛡️防御: {combat_stats['defense']}\n"
+            f"🩸 气血: {combat_stats['hp']}/{combat_stats['max_hp']}\n"
+            f"⚔️ 攻击: {combat_stats['attack']}\n"
+            f"🛡️ 防御: {combat_stats['defense']}\n"
+            f"✨ 灵力: {combat_stats['spiritual_power']}\n"
+            f"🧠 精神力: {combat_stats['mental_power']}\n"
             "--- 穿戴装备 ---\n"
             f"{equipped_info}\n"
             f"--------------------------"

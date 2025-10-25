@@ -99,8 +99,31 @@ class BankHandler:
     @player_required
     async def handle_fixed_deposit(self, player: Player, event: AstrMessageEvent, amount: int, hours: int):
         """定期存款"""
-        if amount <= 0:
-            yield event.plain_result("存款金额必须大于0！")
+        # 检查是否提供了参数
+        if amount <= 0 or hours <= 0:
+            min_hours = self.config["VALUES"]["BANK_FIXED_MIN_HOURS"]
+            rate_per_hour = self.config["VALUES"]["BANK_FIXED_RATE_PER_HOUR"]
+            rate_percent = (rate_per_hour - 1) * 100
+            
+            msg = [
+                "💰 定期存款指南",
+                "━━━━━━━━━━━━━━━",
+                "🔹 使用方法：",
+                f"  {CMD_BANK_FIXED_DEPOSIT} <金额> <时长>",
+                "",
+                "🔹 示例：",
+                f"  {CMD_BANK_FIXED_DEPOSIT} 10000 24",
+                f"  {CMD_BANK_FIXED_DEPOSIT} 50000 48",
+                "",
+                "🔹 规则说明：",
+                f"  • 最低存期：{min_hours} 小时",
+                f"  • 每小时利率：{rate_percent:.1f}%",
+                f"  • 到期后可通过「{CMD_BANK_WITHDRAW} 定期」取出",
+                "  • 利息按复利计算",
+                "  • 未到期不可提前取出",
+                "━━━━━━━━━━━━━━━"
+            ]
+            yield event.plain_result("\n".join(msg))
             return
         
         min_hours = self.config["VALUES"]["BANK_FIXED_MIN_HOURS"]
@@ -144,8 +167,32 @@ class BankHandler:
     @player_required
     async def handle_current_deposit(self, player: Player, event: AstrMessageEvent, amount: int):
         """活期存款"""
+        # 检查是否提供了参数
         if amount <= 0:
-            yield event.plain_result("存款金额必须大于0！")
+            min_hours = self.config["VALUES"]["BANK_CURRENT_MIN_HOURS"]
+            rate_per_hour = self.config["VALUES"]["BANK_CURRENT_RATE_PER_HOUR"]
+            rate_percent = (rate_per_hour - 1) * 100
+            
+            msg = [
+                "💳 活期存款指南",
+                "━━━━━━━━━━━━━━━",
+                "🔹 使用方法：",
+                f"  {CMD_BANK_CURRENT_DEPOSIT} <金额>",
+                "",
+                "🔹 示例：",
+                f"  {CMD_BANK_CURRENT_DEPOSIT} 10000",
+                f"  {CMD_BANK_CURRENT_DEPOSIT} 50000",
+                "",
+                "🔹 规则说明：",
+                f"  • 最低存期：{min_hours} 小时",
+                f"  • 每小时利率：{rate_percent:.1f}%",
+                f"  • 满{min_hours}小时后可随时取出",
+                f"  • 通过「{CMD_BANK_WITHDRAW} 活期 <金额>」取出",
+                "  • 可以部分取出，剩余部分重新计息",
+                "  • 利息按复利计算",
+                "━━━━━━━━━━━━━━━"
+            ]
+            yield event.plain_result("\n".join(msg))
             return
         
         if player.gold < amount:
@@ -170,6 +217,29 @@ class BankHandler:
             "存期结束后可随时取出本金和利息",
             "━━━━━━━━━━━━━━━",
             f"💰 剩余灵石：{player.gold}"
+        ]
+        yield event.plain_result("\n".join(msg))
+
+    async def handle_withdraw_usage(self, event: AstrMessageEvent):
+        """显示取款用法"""
+        msg = [
+            "🏦 取款指令指南",
+            "━━━━━━━━━━━━━━━",
+            "🔹 定期存款取款：",
+            f"  {CMD_BANK_WITHDRAW} 定期",
+            "  • 一次性取出所有已到期的定期存款",
+            "  • 未到期的存款不会被取出",
+            "",
+            "🔹 活期存款取款：",
+            f"  {CMD_BANK_WITHDRAW} 活期 <金额>",
+            "  • 取出指定金额的活期存款",
+            "  • 可以部分取出",
+            "",
+            "🔹 示例：",
+            f"  {CMD_BANK_WITHDRAW} 定期",
+            f"  {CMD_BANK_WITHDRAW} 活期 10000",
+            f"  {CMD_BANK_WITHDRAW} 活期 50000",
+            "━━━━━━━━━━━━━━━"
         ]
         yield event.plain_result("\n".join(msg))
 
@@ -299,8 +369,27 @@ class BankHandler:
     @player_required
     async def handle_transfer(self, player: Player, event: AstrMessageEvent, amount: int):
         """转账"""
+        # 检查是否提供了参数
         if amount <= 0:
-            yield event.plain_result("转账金额必须大于0！")
+            msg = [
+                "💸 转账指令指南",
+                "━━━━━━━━━━━━━━━",
+                "🔹 使用方法：",
+                f"  {CMD_TRANSFER} <金额> @道友",
+                "",
+                "🔹 示例：",
+                f"  {CMD_TRANSFER} 1000 @张三",
+                f"  {CMD_TRANSFER} 50000 @李四",
+                "",
+                "🔹 规则说明：",
+                "  • 金额必须大于0",
+                "  • 需要@对方才能转账",
+                "  • 对方必须已踏入仙途",
+                "  • 不能给自己转账",
+                "  • 转账即时到账",
+                "━━━━━━━━━━━━━━━"
+            ]
+            yield event.plain_result("\n".join(msg))
             return
         
         if player.gold < amount:

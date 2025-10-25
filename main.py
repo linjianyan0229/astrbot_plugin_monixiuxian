@@ -299,23 +299,28 @@ class XiuXianPlugin(Star):
         async for r in self.bank_handler.handle_bank_info(event): yield r
 
     @filter.command(CMD_BANK_FIXED_DEPOSIT, "定期存款")
-    async def handle_fixed_deposit(self, event: AstrMessageEvent, amount: int, hours: int):
+    async def handle_fixed_deposit(self, event: AstrMessageEvent, amount: int = 0, hours: int = 0):
         if not self._check_access(event):
             await self._send_access_denied_message(event)
             return
         async for r in self.bank_handler.handle_fixed_deposit(event, amount, hours): yield r
 
     @filter.command(CMD_BANK_CURRENT_DEPOSIT, "活期存款")
-    async def handle_current_deposit(self, event: AstrMessageEvent, amount: int):
+    async def handle_current_deposit(self, event: AstrMessageEvent, amount: int = 0):
         if not self._check_access(event):
             await self._send_access_denied_message(event)
             return
         async for r in self.bank_handler.handle_current_deposit(event, amount): yield r
 
     @filter.command(CMD_BANK_WITHDRAW, "取款")
-    async def handle_withdraw(self, event: AstrMessageEvent, deposit_type: str, amount: int = 0):
+    async def handle_withdraw(self, event: AstrMessageEvent, deposit_type: str = "", amount: int = 0):
         if not self._check_access(event):
             await self._send_access_denied_message(event)
+            return
+        
+        if not deposit_type or not deposit_type.strip():
+            # 未提供存款类型，显示用法提示
+            async for r in self.bank_handler.handle_withdraw_usage(event): yield r
             return
         
         if deposit_type == "定期":
@@ -329,7 +334,7 @@ class XiuXianPlugin(Star):
             yield event.plain_result(f"取款类型错误！请使用「{CMD_BANK_WITHDRAW} 定期」或「{CMD_BANK_WITHDRAW} 活期 [金额]」")
 
     @filter.command(CMD_TRANSFER, "转账")
-    async def handle_transfer(self, event: AstrMessageEvent, amount: int):
+    async def handle_transfer(self, event: AstrMessageEvent, amount: int = 0):
         if not self._check_access(event):
             await self._send_access_denied_message(event)
             return

@@ -1,152 +1,312 @@
 [
     {
-        "level_name": "炼气一层",
+        "level_name": "炼气期一层",
         "exp_needed": 0,
-        "success_rate": 1.0
+        "success_rate": 1.0,
+        "base_hp": 100,
+        "base_attack": 10,
+        "base_defense": 5,
+        "base_spiritual_power": 50,
+        "base_mental_power": 50
     },
     {
-        "level_name": "炼气二层",
+        "level_name": "炼气期二层",
         "exp_needed": 1000,
-        "success_rate": 1.0
+        "success_rate": 1.0,
+        "base_hp": 150,
+        "base_attack": 15,
+        "base_defense": 8,
+        "base_spiritual_power": 70,
+        "base_mental_power": 70
     },
     {
-        "level_name": "炼气三层",
+        "level_name": "炼气期三层",
         "exp_needed": 2500,
-        "success_rate": 0.95
+        "success_rate": 0.95,
+        "base_hp": 220,
+        "base_attack": 22,
+        "base_defense": 12,
+        "base_spiritual_power": 100,
+        "base_mental_power": 100
     },
     {
-        "level_name": "炼气四层",
+        "level_name": "炼气期四层",
         "exp_needed": 5000,
-        "success_rate": 0.9
+        "success_rate": 0.9,
+        "base_hp": 320,
+        "base_attack": 32,
+        "base_defense": 18,
+        "base_spiritual_power": 150,
+        "base_mental_power": 150
     },
     {
-        "level_name": "炼气五层",
+        "level_name": "炼气期五层",
         "exp_needed": 8000,
-        "success_rate": 0.8
+        "success_rate": 0.8,
+        "base_hp": 450,
+        "base_attack": 45,
+        "base_defense": 25,
+        "base_spiritual_power": 220,
+        "base_mental_power": 220
     },
     {
-        "level_name": "筑基初期",
+        "level_name": "筑基期初期",
         "exp_needed": 15000,
-        "success_rate": 0.6
+        "success_rate": 0.6,
+        "base_hp": 650,
+        "base_attack": 65,
+        "base_defense": 35,
+        "base_spiritual_power": 350,
+        "base_mental_power": 350
     },
     {
-        "level_name": "筑基中期",
+        "level_name": "筑基期中期",
         "exp_needed": 30000,
-        "success_rate": 0.5
+        "success_rate": 0.5,
+        "base_hp": 1000,
+        "base_attack": 100,
+        "base_defense": 55,
+        "base_spiritual_power": 550,
+        "base_mental_power": 550
     },
     {
-        "level_name": "筑基后期",
+        "level_name": "筑基期后期",
         "exp_needed": 50000,
-        "success_rate": 0.4
+        "success_rate": 0.4,
+        "base_hp": 1500,
+        "base_attack": 150,
+        "base_defense": 80,
+        "base_spiritual_power": 850,
+        "base_mental_power": 850
     },
     {
-        "level_name": "搬血境",
+        "level_name": "金丹期初期",
         "exp_needed": 100000,
-        "success_rate": 0.35
+        "success_rate": 0.35,
+        "base_hp": 2300,
+        "base_attack": 230,
+        "base_defense": 120,
+        "base_spiritual_power": 1300,
+        "base_mental_power": 1300
     },
     {
-        "level_name": "洞天境",
+        "level_name": "金丹期中期",
         "exp_needed": 250000,
-        "success_rate": 0.3
+        "success_rate": 0.3,
+        "base_hp": 3500,
+        "base_attack": 350,
+        "base_defense": 180,
+        "base_spiritual_power": 2000,
+        "base_mental_power": 2000
     },
     {
-        "level_name": "化灵境",
+        "level_name": "金丹期后期",
         "exp_needed": 500000,
-        "success_rate": 0.28
+        "success_rate": 0.28,
+        "base_hp": 5500,
+        "base_attack": 550,
+        "base_defense": 280,
+        "base_spiritual_power": 3200,
+        "base_mental_power": 3200
     },
     {
-        "level_name": "铭纹境",
+        "level_name": "元婴期初期",
         "exp_needed": 800000,
-        "success_rate": 0.25
+        "success_rate": 0.25,
+        "base_hp": 8500,
+        "base_attack": 850,
+        "base_defense": 430,
+        "base_spiritual_power": 5000,
+        "base_mental_power": 5000
     },
     {
-        "level_name": "列阵境",
+        "level_name": "元婴期中期",
         "exp_needed": 1200000,
-        "success_rate": 0.22
+        "success_rate": 0.22,
+        "base_hp": 13000,
+        "base_attack": 1300,
+        "base_defense": 650,
+        "base_spiritual_power": 7500,
+        "base_mental_power": 7500
     },
     {
-        "level_name": "尊者境",
+        "level_name": "元婴期后期",
         "exp_needed": 2000000,
-        "success_rate": 0.2
+        "success_rate": 0.2,
+        "base_hp": 20000,
+        "base_attack": 2000,
+        "base_defense": 1000,
+        "base_spiritual_power": 11500,
+        "base_mental_power": 11500
     },
     {
-        "level_name": "神火境",
+        "level_name": "化神期初期",
         "exp_needed": 3500000,
-        "success_rate": 0.18
+        "success_rate": 0.18,
+        "base_hp": 30000,
+        "base_attack": 3000,
+        "base_defense": 1500,
+        "base_spiritual_power": 17500,
+        "base_mental_power": 17500
     },
     {
-        "level_name": "真一境",
+        "level_name": "化神期中期",
         "exp_needed": 6000000,
-        "success_rate": 0.15
+        "success_rate": 0.15,
+        "base_hp": 45000,
+        "base_attack": 4500,
+        "base_defense": 2250,
+        "base_spiritual_power": 26500,
+        "base_mental_power": 26500
     },
     {
-        "level_name": "圣祭境",
+        "level_name": "化神期后期",
         "exp_needed": 10000000,
-        "success_rate": 0.12
+        "success_rate": 0.12,
+        "base_hp": 70000,
+        "base_attack": 7000,
+        "base_defense": 3500,
+        "base_spiritual_power": 40000,
+        "base_mental_power": 40000
     },
     {
-        "level_name": "天神境",
+        "level_name": "炼虚期初期",
         "exp_needed": 18000000,
-        "success_rate": 0.1
+        "success_rate": 0.1,
+        "base_hp": 100000,
+        "base_attack": 10000,
+        "base_defense": 5000,
+        "base_spiritual_power": 60000,
+        "base_mental_power": 60000
     },
     {
-        "level_name": "虚道境",
+        "level_name": "炼虚期中期",
         "exp_needed": 30000000,
-        "success_rate": 0.09
+        "success_rate": 0.09,
+        "base_hp": 150000,
+        "base_attack": 15000,
+        "base_defense": 7500,
+        "base_spiritual_power": 90000,
+        "base_mental_power": 90000
     },
     {
-        "level_name": "斩我境",
+        "level_name": "炼虚期后期",
         "exp_needed": 50000000,
-        "success_rate": 0.08
+        "success_rate": 0.08,
+        "base_hp": 220000,
+        "base_attack": 22000,
+        "base_defense": 11000,
+        "base_spiritual_power": 130000,
+        "base_mental_power": 130000
     },
     {
-        "level_name": "遁一境",
+        "level_name": "合体期初期",
         "exp_needed": 80000000,
-        "success_rate": 0.07
+        "success_rate": 0.07,
+        "base_hp": 330000,
+        "base_attack": 33000,
+        "base_defense": 16500,
+        "base_spiritual_power": 200000,
+        "base_mental_power": 200000
     },
     {
-        "level_name": "至尊境",
+        "level_name": "合体期中期",
         "exp_needed": 120000000,
-        "success_rate": 0.06
+        "success_rate": 0.06,
+        "base_hp": 500000,
+        "base_attack": 50000,
+        "base_defense": 25000,
+        "base_spiritual_power": 300000,
+        "base_mental_power": 300000
     },
     {
-        "level_name": "真仙境",
+        "level_name": "合体期后期",
         "exp_needed": 200000000,
-        "success_rate": 0.05
+        "success_rate": 0.05,
+        "base_hp": 750000,
+        "base_attack": 75000,
+        "base_defense": 37500,
+        "base_spiritual_power": 450000,
+        "base_mental_power": 450000
     },
     {
-        "level_name": "仙王境",
+        "level_name": "大乘期初期",
         "exp_needed": 500000000,
-        "success_rate": 0.04
+        "success_rate": 0.04,
+        "base_hp": 1200000,
+        "base_attack": 120000,
+        "base_defense": 60000,
+        "base_spiritual_power": 700000,
+        "base_mental_power": 700000
     },
     {
-        "level_name": "准仙帝",
+        "level_name": "大乘期中期",
         "exp_needed": 1000000000,
-        "success_rate": 0.03
+        "success_rate": 0.03,
+        "base_hp": 1800000,
+        "base_attack": 180000,
+        "base_defense": 90000,
+        "base_spiritual_power": 1100000,
+        "base_mental_power": 1100000
     },
     {
-        "level_name": "仙帝境",
+        "level_name": "大乘期后期",
         "exp_needed": 2500000000,
-        "success_rate": 0.02
+        "success_rate": 0.02,
+        "base_hp": 2800000,
+        "base_attack": 280000,
+        "base_defense": 140000,
+        "base_spiritual_power": 1700000,
+        "base_mental_power": 1700000
     },
     {
-        "level_name": "祭道境",
+        "level_name": "渡劫期",
         "exp_needed": 5000000000,
-        "success_rate": 0.01
+        "success_rate": 0.01,
+        "base_hp": 4500000,
+        "base_attack": 450000,
+        "base_defense": 225000,
+        "base_spiritual_power": 2700000,
+        "base_mental_power": 2700000
     },
     {
-        "level_name": "祭道之上",
+        "level_name": "地仙",
         "exp_needed": 9999999999,
-        "success_rate": 0.001
+        "success_rate": 0.001,
+        "base_hp": 7000000,
+        "base_attack": 700000,
+        "base_defense": 350000,
+        "base_spiritual_power": 4200000,
+        "base_mental_power": 4200000
+    },
+    {
+        "level_name": "天仙",
+        "exp_needed": 15000000000,
+        "success_rate": 0.0005,
+        "base_hp": 11000000,
+        "base_attack": 1100000,
+        "base_defense": 550000,
+        "base_spiritual_power": 6600000,
+        "base_mental_power": 6600000
     },
     {
         "level_name": "大罗金仙",
-        "exp_needed": 15000000000,
-        "success_rate": 0.0005
+        "exp_needed": 25000000000,
+        "success_rate": 0.0002,
+        "base_hp": 15000000,
+        "base_attack": 1500000,
+        "base_defense": 750000,
+        "base_spiritual_power": 9000000,
+        "base_mental_power": 9000000
     },
     {
         "level_name": "混元大罗金仙",
-        "exp_needed": 30000000000,
-        "success_rate": 0.0001
+        "exp_needed": 50000000000,
+        "success_rate": 0.0001,
+        "base_hp": 25000000,
+        "base_attack": 2500000,
+        "base_defense": 1250000,
+        "base_spiritual_power": 15000000,
+        "base_mental_power": 15000000
     }
 ]

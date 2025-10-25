@@ -258,7 +258,7 @@ class DataBase:
             logger.error(f"购买物品事务失败: {e}")
             return False, "ERROR_DATABASE"
 
-    async def transactional_apply_item_effect(self, user_id: str, item_id: str, quantity: int, effect: PlayerEffect) -> bool:
+    async def transactional_apply_item_effect(self, user_id: str, item_id: str, quantity: int, effect: PlayerEffect, breakthrough_bonus: float = 0.0) -> bool:
         try:
             await self.conn.execute("BEGIN")
             cursor = await self.conn.execute(
@@ -276,10 +276,18 @@ class DataBase:
                 UPDATE players
                 SET experience = experience + ?,
                     gold = gold + ?,
-                    hp = MIN(max_hp, hp + ?)
+                    hp = MIN(max_hp + ?, hp + ?),
+                    max_hp = max_hp + ?,
+                    spiritual_power = spiritual_power + ?,
+                    mental_power = mental_power + ?,
+                    attack = attack + ?,
+                    defense = defense + ?,
+                    breakthrough_bonus = ?
                 WHERE user_id = ?
                 """,
-                (effect.experience, effect.gold, effect.hp, user_id)
+                (effect.experience, effect.gold, effect.max_hp, effect.hp, 
+                 effect.max_hp, effect.spiritual_power, effect.mental_power,
+                 effect.attack, effect.defense, breakthrough_bonus, user_id)
             )
             await self.conn.commit()
             return True

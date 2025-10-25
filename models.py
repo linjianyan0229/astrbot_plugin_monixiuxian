@@ -54,6 +54,8 @@ class Player:
     max_hp: int = 100
     attack: int = 10
     defense: int = 5
+    spiritual_power: int = 50  # 灵力
+    mental_power: int = 50  # 精神力
     realm_id: Optional[str] = None
     realm_floor: int = 0
     realm_data: Optional[str] = None
@@ -65,6 +67,9 @@ class Player:
     
     # 道号
     dao_name: Optional[str] = None
+    
+    # 突破成功率加成（临时buff）
+    breakthrough_bonus: float = 0.0
 
     def get_level(self, config_manager: "ConfigManager") -> str:
         if 0 <= self.level_index < len(config_manager.level_data):
@@ -78,6 +83,8 @@ class Player:
             "max_hp": self.max_hp,
             "attack": self.attack,
             "defense": self.defense,
+            "spiritual_power": self.spiritual_power,
+            "mental_power": self.mental_power,
         }
         
         equipment_ids = [self.equipped_weapon, self.equipped_armor, self.equipped_accessory]
@@ -116,6 +123,11 @@ class PlayerEffect:
     experience: int = 0
     gold: int = 0
     hp: int = 0
+    max_hp: int = 0
+    spiritual_power: int = 0
+    mental_power: int = 0
+    attack: int = 0
+    defense: int = 0
 
 @dataclass
 class Boss:
